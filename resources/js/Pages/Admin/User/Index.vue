@@ -26,10 +26,6 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
-  can: {
-    type: Object,
-    default: () => ({}),
-  },
 })
 
 const form = useForm({
@@ -55,7 +51,6 @@ function destroy(id) {
         main
       >
         <BaseButton
-          v-if="can.delete"
           :route-name="route('user.create')"
           :icon="mdiPlus"
           label="Add"
@@ -112,7 +107,7 @@ function destroy(id) {
                 <th>
                     <Sort label="Role" attribute="role" />
                 </th>
-              <th v-if="can.edit || can.delete">Actions</th>
+              <th>Actions</th>
             </tr>
           </thead>
 
@@ -137,20 +132,15 @@ function destroy(id) {
                 <td data-label="Role">
                     {{ user.role }}
                 </td>
-              <td
-                v-if="can.edit || can.delete"
-                class="before:hidden lg:w-1 whitespace-nowrap"
-              >
+              <td class="before:hidden lg:w-1 whitespace-nowrap">
                 <BaseButtons type="justify-start lg:justify-end" no-wrap>
                   <BaseButton
-                    v-if="can.edit"
                     :route-name="route('user.edit', user.id)"
                     color="info"
                     :icon="mdiSquareEditOutline"
                     small
                   />
                   <BaseButton
-                    v-if="can.delete"
                     color="danger"
                     :icon="mdiTrashCan"
                     small
