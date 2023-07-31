@@ -21,8 +21,8 @@ class TicketsController extends Controller
         $tickets = (new Ticket())->newQuery()
             ->with(['status:id,name_en', 'category:id,name_en', 'priority:id,name_en', 'project:id,name']);
 
-        if (request()->has('search')) {
-            $tickets->where('title', 'Like', '%'.request()->input('search').'%');
+        if (request()->query()) {
+            $tickets->filter(request()->query());
         }
 
         if (request()->query('sort')) {
@@ -37,11 +37,11 @@ class TicketsController extends Controller
             $tickets->latest();
         }
 
-        $tickets = $tickets->paginate(10)->onEachSide(2)->appends(request()->query());
+        $tickets = $tickets->paginate(10)->appends(request()->query());
 
         return Inertia::render('Admin/Tickets/Index', [
             'tickets' => $tickets,
-            'filters' => request()->all('search'),
+            'filters' => request()->query(),
             'statuses' => Status::get(['id', 'name_en']),
             'priorities' => Priority::get(['id', 'name_en']),
             'categories' => TicketCategory::get(['id', 'name_en']),

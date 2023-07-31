@@ -94,7 +94,7 @@ function destroy(id) {
                             <Sort label="Name" attribute="name" />
                         </th>
                         <th>
-                            Company Name
+                            <Sort label="Company Name" attribute="company_id" />
                         </th>
                         <th>
                             <Sort label="Support End Date" attribute="end_date" />

@@ -50,7 +50,7 @@ const form = useForm({
     date: props.filters.date ? props.filters.date : '',
     platform: props.filters.platform ? props.filters.platform : '',
     status_id : props.filters.status_id ? props.filters.status_id : '',
-    category_id : props.filters.category_id ? props.filters.category_id : '',
+    ticket_category_id : props.filters.ticket_category_id ? props.filters.ticket_category_id : '',
     priority_id : props.filters.priority_id ? props.filters.priority_id : '',
     project_id : props.filters.project_id ? props.filters.project_id : '',
 })
@@ -100,7 +100,7 @@ function destroy(id) {
                             </select>
                         </div>
                         <div class="p-4 w-full">
-                            <select v-model="form.category_id"
+                            <select v-model="form.ticket_category_id"
                                 class="h-full rounded-md rounded-r border-t border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700  leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Category</option>
                                 <option v-for="category in categories"  :value="category.id">{{ category.name_en }}</option>
@@ -164,22 +164,22 @@ function destroy(id) {
                            #
                         </th>
                         <th>
-                            <Sort label="Name" attribute="name" />
+                            <Sort label="Name" attribute="title" />
                         </th>
                         <th>
-                            <Sort label="Project" attribute="email" />
+                            <Sort label="Project" attribute="project_id" />
                         </th>
                         <th>
-                            <Sort label="Category" attribute="role" />
+                            <Sort label="Category" attribute="ticket_category_id" />
                         </th>
                         <th>
-                            <Sort label="Status" attribute="role" />
+                            <Sort label="Status" attribute="status_id" />
                         </th>
                         <th>
-                            <Sort label="Priority" attribute="role" />
+                            <Sort label="Priority" attribute="priority_id" />
                         </th>
                         <th>
-                            <Sort label="Platform" attribute="platform" />
+                            <Sort label="Platform" attribute="device_os" />
                         </th>
                         <th>Actions</th>
                     </tr>
@@ -193,21 +193,24 @@ function destroy(id) {
                         <td data-label="Name">
                             <Link
                                 :href="route('tickets.show', ticket.id)"
-                                class="
-                    no-underline
-                    hover:underline
-                    text-cyan-600
-                    dark:text-cyan-400
-                  "
-                            >
-                                {{ ticket.name }}
+                                class=" no-underline hover:underline text-cyan-600 dark:text-cyan-400">
+                                {{ ticket.title }}
                             </Link>
                         </td>
-                        <td data-label="Email">
-                            {{ ticket.email }}
+                        <td data-label="project">
+                            {{ ticket.project.name }}
                         </td>
-                        <td data-label="Role">
-                            {{ ticket.role }}
+                        <td data-label="category">
+                            {{ ticket.category ? ticket.category.name_en : ' - - ' }}
+                        </td>
+                        <td data-label="status">
+                            {{ ticket.status.name_en }}
+                        </td>
+                        <td data-label="priority">
+                            {{ ticket.priority ? ticket.priority.name_en : ' - - ' }}
+                        </td>
+                        <td data-label="device_os">
+                            {{ ticket.device_os }}
                         </td>
                         <td
                             class="before:hidden lg:w-1 whitespace-nowrap"

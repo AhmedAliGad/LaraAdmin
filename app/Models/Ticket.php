@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasPhoto;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -111,6 +112,32 @@ class Ticket extends Model
     public function scopeOsFilter($query, $value)
     {
         return isset($value) ? $query->where('device_os', $value) : $query;
+    }
+
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        return $query->when(
+            $filters['status_id'] ?? false,
+            fn ($query, $value) => $query->where('status_id', $value)
+        )->when(
+            $filters['ticket_category_id'] ?? false,
+            fn ($query, $value) => $query->where('ticket_category_id', $value)
+        )->when(
+            $filters['project_id'] ?? false,
+            fn ($query, $value) => $query->where('project_id', $value)
+        )->when(
+            $filters['priority_id'] ?? false,
+            fn ($query, $value) => $query->where('priority_id', $value)
+        )->when(
+            $filters['device_os'] ?? false,
+            fn ($query, $value) => $query->where('device_os', $value)
+        )->when(
+            $filters['date_from'] ?? false,
+            fn ($query, $value) => $query->whereDate('created_at', '>=', $value)
+        )->when(
+            $filters['date_to'] ?? false,
+            fn ($query, $value) => $query->whereDate('created_at', '<=', $value)
+        );
     }
 
     public function scopeOpen($query)

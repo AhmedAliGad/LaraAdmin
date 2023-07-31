@@ -1,7 +1,5 @@
 import {
-    mdiMonitor,
-    mdiListStatus,
-    mdiAccountGroup,
+    mdiMonitor, mdiListStatus, mdiAccountGroup, mdiCogs,
     mdiHandshake, mdiApps, mdiBallot, mdiSort, mdiCloseBoxMultiple
 } from '@mdi/js'
 
@@ -54,5 +52,10 @@ export default [
         route: 'close_reasons.index',
         icon: mdiCloseBoxMultiple,
         label: 'Close Reasons'
+    },
+    {
+        route: 'settings.edit',
+        icon: mdiCogs,
+        label: 'General Settings'
     }
 ]
