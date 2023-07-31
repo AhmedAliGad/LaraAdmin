@@ -32,7 +32,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = (new User)->newQuery();
+        $users = (new User)->newQuery()->whereIn('role', ['client', 'supervisor'])->with('company:id,name');
 
         if (request()->has('search')) {
             $users->where('name', 'Like', '%'.request()->input('search').'%');
@@ -50,7 +50,7 @@ class UserController extends Controller
             $users->latest();
         }
 
-        $users = $users->paginate(5)->onEachSide(2)->appends(request()->query());
+        $users = $users->paginate(10)->onEachSide(2)->appends(request()->query());
 
         return Inertia::render('Admin/User/Index', [
             'users' => $users,

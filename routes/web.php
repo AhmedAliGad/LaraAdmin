@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\CloseReasonsController;
 use App\Http\Controllers\Admin\CompaniesController;
+use App\Http\Controllers\Admin\PrioritiesController;
 use App\Http\Controllers\Admin\ProjectsController;
+use App\Http\Controllers\Admin\StatusesController;
+use App\Http\Controllers\Admin\SupportTeamsController;
 use App\Http\Controllers\Admin\TicketsController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -27,12 +30,20 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::group(['middleware' => ['auth']], function () {
+    /* ====== Support Teams =======*/
+    Route::resource('support_teams', SupportTeamsController::class);
     /* ====== Companies =======*/
     Route::resource('companies', CompaniesController::class);
     /* ====== Projects =======*/
     Route::resource('projects', ProjectsController::class);
     /* ====== Tickets =======*/
     Route::resource('tickets', TicketsController::class);
+    /* ====== Statuses =======*/
+    Route::resource('statuses', StatusesController::class, ['except' => 'show']);
+    /* ====== Priorities =======*/
+    Route::resource('priorities', PrioritiesController::class, ['except' => 'show']);
+    /* ====== Close Reasons =======*/
+    Route::resource('close_reasons', CloseReasonsController::class, ['except' => 'show']);
 });
 
 require __DIR__.'/auth.php';

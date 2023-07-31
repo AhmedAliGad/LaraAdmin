@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Priority;
+use App\Models\Project;
+use App\Models\Status;
 use App\Models\Ticket;
+use App\Models\TicketCategory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,7 +18,8 @@ class TicketsController extends Controller
      */
     public function index()
     {
-        $tickets = (new Ticket())->newQuery();
+        $tickets = (new Ticket())->newQuery()
+            ->with(['status:id,name_en', 'category:id,name_en', 'priority:id,name_en', 'project:id,name']);
 
         if (request()->has('search')) {
             $tickets->where('title', 'Like', '%'.request()->input('search').'%');
@@ -32,11 +37,15 @@ class TicketsController extends Controller
             $tickets->latest();
         }
 
-        $tickets = $tickets->paginate(5)->onEachSide(2)->appends(request()->query());
+        $tickets = $tickets->paginate(10)->onEachSide(2)->appends(request()->query());
 
         return Inertia::render('Admin/Tickets/Index', [
             'tickets' => $tickets,
             'filters' => request()->all('search'),
+            'statuses' => Status::get(['id', 'name_en']),
+            'priorities' => Priority::get(['id', 'name_en']),
+            'categories' => TicketCategory::get(['id', 'name_en']),
+            'projects' => Project::get(['id', 'name']),
         ]);
     }
 

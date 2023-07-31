@@ -1,9 +1,9 @@
 <script setup>
-import { Head, Link, useForm } from "@inertiajs/vue3"
+import { Head, useForm } from "@inertiajs/vue3"
 import {
     mdiPlus,
     mdiSquareEditOutline,
-    mdiTrashCan,
+    mdiSort,
     mdiAlertBoxOutline, mdiApps,
 } from "@mdi/js"
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue"
@@ -17,7 +17,7 @@ import Pagination from "@/Components/Admin/Pagination.vue"
 import Sort from "@/Components/Admin/Sort.vue"
 
 const props = defineProps({
-    projects: {
+    priorities: {
         type: Object,
         default: () => ({}),
     },
@@ -35,22 +35,22 @@ const formDelete = useForm({})
 
 function destroy(id) {
     if (confirm("Are you sure you want to delete?")) {
-        formDelete.delete(route("projects.destroy", id))
+        formDelete.delete(route("priorities.destroy", id))
     }
 }
 </script>
 
 <template>
     <LayoutAuthenticated>
-        <Head title="Projects" />
+        <Head title="Priorities" />
         <SectionMain>
             <SectionTitleLineWithButton
-                :icon="mdiApps"
-                title="Projects"
+                :icon="mdiSort"
+                title="Priorities"
                 main
             >
                 <BaseButton
-                    :route-name="route('projects.create')"
+                    :route-name="route('priorities.create')"
                     :icon="mdiPlus"
                     label="Add"
                     color="info"
@@ -66,7 +66,7 @@ function destroy(id) {
                 {{ $page.props.flash.message }}
             </NotificationBar>
             <CardBox class="mb-6" has-table>
-                <form @submit.prevent="form.get(route('projects.index'))">
+                <form @submit.prevent="form.get(route('priorities.index'))">
                     <div class="py-2 flex">
                         <div class="flex pl-4">
                             <input
@@ -91,59 +91,25 @@ function destroy(id) {
                     <thead>
                     <tr>
                         <th>
-                            <Sort label="Name" attribute="name" />
-                        </th>
-                        <th>
-                            Company Name
-                        </th>
-                        <th>
-                            <Sort label="Support End Date" attribute="end_date" />
-                        </th>
-                        <th>
-                            <Sort label="Tickets no" attribute="tickets_count" />
+                            <Sort label="Name" attribute="name_en" />
                         </th>
                         <th>Actions</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    <tr v-for="project in projects.data" :key="project.id">
+                    <tr v-for="priority in priorities.data" :key="priority.id">
                         <td data-label="Name">
-                            <Link
-                                :href="route('projects.show', project.id)"
-                                class="
-                    no-underline
-                    hover:underline
-                    text-cyan-600
-                    dark:text-cyan-400
-                  "
-                            >
-                                {{ project.name }}
-                            </Link>
-                        </td>
-                        <td data-label="Email">
-                            {{ project.company.name }}
-                        </td>
-                        <td data-label="end_date">
-                            {{ project.end_date }}
-                        </td>
-                        <td data-label="tickets_count">
-                            {{ project.tickets_count }}
+                            {{ priority.name_en }}
                         </td>
                         <td
                             class="before:hidden lg:w-1 whitespace-nowrap"
                         >
-                            <BaseButtons type="justify-start lg:justify-end" no-wrap>
+                            <BaseButtons type="justify-start lg:justify-center" no-wrap>
                                 <BaseButton
-                                    :route-name="route('projects.edit', project.id)"
+                                    :route-name="route('priorities.edit', priority.id)"
                                     color="info"
                                     :icon="mdiSquareEditOutline"
-                                    small
-                                />
-                                <BaseButton
-                                    :route-name="route('projects.show', project.id)"
-                                    color="warning"
-                                    label="Tickets"
                                     small
                                 />
                             </BaseButtons>
@@ -152,7 +118,7 @@ function destroy(id) {
                     </tbody>
                 </table>
                 <div class="py-4">
-                    <Pagination :data="projects" />
+                    <Pagination :data="priorities" />
                 </div>
             </CardBox>
         </SectionMain>

@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class ProjectsController extends Controller
+class SupportTeamsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $projects = (new Project())->newQuery()->with(['company:id,name'])->withCount('tickets');
+        $users = (new User)->newQuery()->where('role', 'support');
 
         if (request()->has('search')) {
-            $projects->where('name', 'Like', '%'.request()->input('search').'%');
+            $users->where('name', 'Like', '%'.request()->input('search').'%');
         }
 
         if (request()->query('sort')) {
@@ -27,15 +28,15 @@ class ProjectsController extends Controller
                 $sort_order = 'DESC';
                 $attribute = substr($attribute, 1);
             }
-            $projects->orderBy($attribute, $sort_order);
+            $users->orderBy($attribute, $sort_order);
         } else {
-            $projects->latest();
+            $users->latest();
         }
 
-        $projects = $projects->paginate(10)->onEachSide(2)->appends(request()->query());
+        $users = $users->paginate(10)->onEachSide(2)->appends(request()->query());
 
-        return Inertia::render('Admin/Projects/Index', [
-            'projects' => $projects,
+        return Inertia::render('Admin/SupportTeams/Index', [
+            'users' => $users,
             'filters' => request()->all('search'),
         ]);
     }
@@ -59,7 +60,7 @@ class ProjectsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(User $user)
     {
         //
     }
@@ -67,7 +68,7 @@ class ProjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit(User $user)
     {
         //
     }
@@ -75,7 +76,7 @@ class ProjectsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -83,7 +84,7 @@ class ProjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(User $user)
     {
         //
     }

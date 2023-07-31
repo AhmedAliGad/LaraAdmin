@@ -23,6 +23,22 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    statuses: {
+        type: Object,
+        default: () => ({}),
+    },
+    categories: {
+        type: Object,
+        default: () => ({}),
+    },
+    priorities: {
+        type: Object,
+        default: () => ({}),
+    },
+    projects: {
+        type: Object,
+        default: () => ({}),
+    },
     filters: {
         type: Object,
         default: () => ({}),
@@ -33,6 +49,10 @@ const form = useForm({
     search: props.filters.search,
     date: props.filters.date ? props.filters.date : '',
     platform: props.filters.platform ? props.filters.platform : '',
+    status_id : props.filters.status_id ? props.filters.status_id : '',
+    category_id : props.filters.category_id ? props.filters.category_id : '',
+    priority_id : props.filters.priority_id ? props.filters.priority_id : '',
+    project_id : props.filters.project_id ? props.filters.project_id : '',
 })
 
 const formDelete = useForm({})
@@ -73,23 +93,20 @@ function destroy(id) {
                 <form @submit.prevent="form.get(route('tickets.index'))">
                     <div class="py-2 flex">
                         <div class="flex pl-4">
-                            <select
+                            <select v-model="form.status_id"
                                 class="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Status</option>
-                                <option>10</option>
-                                <option>20</option>
+                                <option v-for="status in statuses"  :value="status.id">{{ status.name_en }}</option>
                             </select>
-                            <select
+                            <select v-model="form.category_id"
                                 class="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Category</option>
-                                <option>10</option>
-                                <option>20</option>
+                                <option v-for="category in categories"  :value="category.id">{{ category.name_en }}</option>
                             </select>
-                            <select
+                            <select v-model="form.priority_id"
                                 class="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Priority</option>
-                                <option>10</option>
-                                <option>20</option>
+                                <option v-for="priority in priorities"  :value="priority.id">{{ priority.name_en }}</option>
                             </select>
                             <select v-model="form.platform"
                                 class="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
@@ -102,11 +119,10 @@ function destroy(id) {
                     </div>
                     <div class="py-2 flex">
                         <div class="flex pl-4">
-                            <select
+                            <select v-model="form.project_id"
                                 class="h-full rounded-md border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Project</option>
-                                <option>10</option>
-                                <option>20</option>
+                                <option v-for="project in projects"  :value="project.id">{{ project.name }}</option>
                             </select>
                             <VueCtkDateTimePicker color="#2563EB" :only-date="true" button-color="#54cc96" :inline="false"
                                                   v-model="form.date" format="YYYY-MM-DD" formatted="YYYY-MM-DD">
@@ -133,23 +149,38 @@ function destroy(id) {
                     <thead>
                     <tr>
                         <th>
+                           #
+                        </th>
+                        <th>
                             <Sort label="Name" attribute="name" />
                         </th>
                         <th>
-                            <Sort label="Email" attribute="email" />
+                            <Sort label="Project" attribute="email" />
                         </th>
                         <th>
-                            <Sort label="Role" attribute="role" />
+                            <Sort label="Category" attribute="role" />
+                        </th>
+                        <th>
+                            <Sort label="Status" attribute="role" />
+                        </th>
+                        <th>
+                            <Sort label="Priority" attribute="role" />
+                        </th>
+                        <th>
+                            <Sort label="Platform" attribute="platform" />
                         </th>
                         <th>Actions</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    <tr v-for="user in tickets.data" :key="user.id">
+                    <tr v-for="ticket in tickets.data" :key="ticket.id">
+                        <td>
+                            {{ ticket.id }}
+                        </td>
                         <td data-label="Name">
                             <Link
-                                :href="route('tickets.show', user.id)"
+                                :href="route('tickets.show', ticket.id)"
                                 class="
                     no-underline
                     hover:underline
@@ -157,21 +188,21 @@ function destroy(id) {
                     dark:text-cyan-400
                   "
                             >
-                                {{ user.name }}
+                                {{ ticket.name }}
                             </Link>
                         </td>
                         <td data-label="Email">
-                            {{ user.email }}
+                            {{ ticket.email }}
                         </td>
                         <td data-label="Role">
-                            {{ user.role }}
+                            {{ ticket.role }}
                         </td>
                         <td
                             class="before:hidden lg:w-1 whitespace-nowrap"
                         >
                             <BaseButtons type="justify-start lg:justify-end" no-wrap>
                                 <BaseButton
-                                    :route-name="route('tickets.edit', user.id)"
+                                    :route-name="route('tickets.edit', ticket.id)"
                                     color="info"
                                     :icon="mdiSquareEditOutline"
                                     small
@@ -180,7 +211,7 @@ function destroy(id) {
                                     color="danger"
                                     :icon="mdiTrashCan"
                                     small
-                                    @click="destroy(user.id)"
+                                    @click="destroy(ticket.id)"
                                 />
                             </BaseButtons>
                         </td>

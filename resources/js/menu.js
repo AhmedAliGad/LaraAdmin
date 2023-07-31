@@ -1,8 +1,8 @@
 import {
     mdiMonitor,
-    mdiMessageQuestion,
+    mdiListStatus,
     mdiAccountGroup,
-    mdiHandshake, mdiApps, mdiBallot
+    mdiHandshake, mdiApps, mdiBallot, mdiSort, mdiCloseBoxMultiple
 } from '@mdi/js'
 
 export default [
@@ -21,7 +21,7 @@ export default [
             },
             {
                 label: "Support Team",
-                route: 'user.index',
+                route: 'support_teams.index',
             },
         ],
     },
@@ -39,5 +39,20 @@ export default [
         route: 'tickets.index',
         icon: mdiBallot,
         label: 'Tickets'
+    },
+    {
+        route: 'statuses.index',
+        icon: mdiListStatus,
+        label: 'Statuses'
+    },
+    {
+        route: 'priorities.index',
+        icon: mdiSort,
+        label: 'Priorities'
+    },
+    {
+        route: 'close_reasons.index',
+        icon: mdiCloseBoxMultiple,
+        label: 'Close Reasons'
     }
 ]

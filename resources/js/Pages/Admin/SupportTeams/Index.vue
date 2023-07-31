@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link, useForm } from "@inertiajs/vue3"
 import {
-    mdiHandshake,
+  mdiMonitorAccount,
   mdiPlus,
   mdiSquareEditOutline,
   mdiTrashCan,
@@ -18,11 +18,15 @@ import Pagination from "@/Components/Admin/Pagination.vue"
 import Sort from "@/Components/Admin/Sort.vue"
 
 const props = defineProps({
-    companies: {
+  users: {
     type: Object,
     default: () => ({}),
   },
   filters: {
+    type: Object,
+    default: () => ({}),
+  },
+  can: {
     type: Object,
     default: () => ({}),
   },
@@ -36,22 +40,23 @@ const formDelete = useForm({})
 
 function destroy(id) {
   if (confirm("Are you sure you want to delete?")) {
-    formDelete.delete(route("companies.destroy", id))
+    formDelete.delete(route("user.destroy", id))
   }
 }
 </script>
 
 <template>
   <LayoutAuthenticated>
-    <Head title="Companies" />
+    <Head title="Support Teams" />
     <SectionMain>
       <SectionTitleLineWithButton
-        :icon="mdiHandshake"
-        title="Companies"
+        :icon="mdiMonitorAccount"
+        title="Support Teams"
         main
       >
         <BaseButton
-          :route-name="route('companies.create')"
+          v-if="can.delete"
+          :route-name="route('user.create')"
           :icon="mdiPlus"
           label="Add"
           color="info"
@@ -67,7 +72,7 @@ function destroy(id) {
         {{ $page.props.flash.message }}
       </NotificationBar>
       <CardBox class="mb-6" has-table>
-        <form @submit.prevent="form.get(route('companies.index'))">
+        <form @submit.prevent="form.get(route('user.index'))">
           <div class="py-2 flex">
             <div class="flex pl-4">
               <input
@@ -102,17 +107,20 @@ function destroy(id) {
                 <Sort label="Name" attribute="name" />
               </th>
               <th>
-                <Sort label="Projects no" attribute="projects_count" />
+                <Sort label="Email" attribute="email" />
               </th>
-              <th>Actions</th>
+                <th>
+                    <Sort label="Role" attribute="role" />
+                </th>
+              <th v-if="can.edit || can.delete">Actions</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr v-for="company in companies.data" :key="company.id">
+            <tr v-for="user in users.data" :key="user.id">
               <td data-label="Name">
                 <Link
-                  :href="route('companies.show', company.id)"
+                  :href="route('user.show', user.id)"
                   class="
                     no-underline
                     hover:underline
@@ -120,27 +128,33 @@ function destroy(id) {
                     dark:text-cyan-400
                   "
                 >
-                  {{ company.name }}
+                  {{ user.name }}
                 </Link>
               </td>
               <td data-label="Email">
-                {{ company.projects_count }}
+                {{ user.email }}
               </td>
+                <td data-label="Role">
+                    {{ user.role }}
+                </td>
               <td
+                v-if="can.edit || can.delete"
                 class="before:hidden lg:w-1 whitespace-nowrap"
               >
                 <BaseButtons type="justify-start lg:justify-end" no-wrap>
                   <BaseButton
-                    :route-name="route('companies.edit', company.id)"
+                    v-if="can.edit"
+                    :route-name="route('user.edit', user.id)"
                     color="info"
                     :icon="mdiSquareEditOutline"
                     small
                   />
                   <BaseButton
-                      :route-name="route('companies.show', company.id)"
-                      color="warning"
-                      label="Projects"
-                      small
+                    v-if="can.delete"
+                    color="danger"
+                    :icon="mdiTrashCan"
+                    small
+                    @click="destroy(user.id)"
                   />
                 </BaseButtons>
               </td>
@@ -148,7 +162,7 @@ function destroy(id) {
           </tbody>
         </table>
         <div class="py-4">
-          <Pagination :data="companies" />
+          <Pagination :data="users" />
         </div>
       </CardBox>
     </SectionMain>

@@ -14,7 +14,7 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        $companies = (new Company())->newQuery();
+        $companies = (new Company())->newQuery()->withCount('projects');
 
         if (request()->has('search')) {
             $companies->where('name', 'Like', '%'.request()->input('search').'%');

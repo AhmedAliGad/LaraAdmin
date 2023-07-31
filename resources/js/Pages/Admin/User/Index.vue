@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link, useForm } from "@inertiajs/vue3"
 import {
-  mdiAccountKey,
+  mdiTicketAccount,
   mdiPlus,
   mdiSquareEditOutline,
   mdiTrashCan,
@@ -47,11 +47,11 @@ function destroy(id) {
 
 <template>
   <LayoutAuthenticated>
-    <Head title="Users" />
+    <Head title="Clients" />
     <SectionMain>
       <SectionTitleLineWithButton
-        :icon="mdiAccountKey"
-        title="Users"
+        :icon="mdiTicketAccount"
+        title="Clients"
         main
       >
         <BaseButton

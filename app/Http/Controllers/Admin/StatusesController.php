@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Project;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ProjectsController extends Controller
+class StatusesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $projects = (new Project())->newQuery()->with(['company:id,name'])->withCount('tickets');
+        $statuses = (new Status())->newQuery();
 
         if (request()->has('search')) {
-            $projects->where('name', 'Like', '%'.request()->input('search').'%');
+            $statuses->where('name_en', 'Like', '%'.request()->input('search').'%');
         }
 
         if (request()->query('sort')) {
@@ -27,15 +27,15 @@ class ProjectsController extends Controller
                 $sort_order = 'DESC';
                 $attribute = substr($attribute, 1);
             }
-            $projects->orderBy($attribute, $sort_order);
+            $statuses->orderBy($attribute, $sort_order);
         } else {
-            $projects->latest();
+            $statuses->latest();
         }
 
-        $projects = $projects->paginate(10)->onEachSide(2)->appends(request()->query());
+        $statuses = $statuses->paginate(5)->onEachSide(2)->appends(request()->query());
 
-        return Inertia::render('Admin/Projects/Index', [
-            'projects' => $projects,
+        return Inertia::render('Admin/Statuses/Index', [
+            'statuses' => $statuses,
             'filters' => request()->all('search'),
         ]);
     }
@@ -59,7 +59,7 @@ class ProjectsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Status $status)
     {
         //
     }
@@ -67,7 +67,7 @@ class ProjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit(Status $status)
     {
         //
     }
@@ -75,7 +75,7 @@ class ProjectsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Status $status)
     {
         //
     }
@@ -83,7 +83,7 @@ class ProjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Status $status)
     {
         //
     }
