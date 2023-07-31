@@ -89,27 +89,33 @@ function destroy(id) {
             >
                 {{ $page.props.flash.message }}
             </NotificationBar>
-            <CardBox class="grid justify-items-center mb-6" has-table>
+            <CardBox class="mb-6" has-table>
                 <form @submit.prevent="form.get(route('tickets.index'))">
-                    <div class="py-2 flex">
-                        <div class="flex pl-4">
+                    <div class="flex items-stretch">
+                        <div class="p-4 w-full">
                             <select v-model="form.status_id"
-                                class="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                                class="h-full rounded-md rounded-r border-t border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700  leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Status</option>
                                 <option v-for="status in statuses"  :value="status.id">{{ status.name_en }}</option>
                             </select>
+                        </div>
+                        <div class="p-4 w-full">
                             <select v-model="form.category_id"
-                                class="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                                class="h-full rounded-md rounded-r border-t border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700  leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Category</option>
                                 <option v-for="category in categories"  :value="category.id">{{ category.name_en }}</option>
                             </select>
+                        </div>
+                        <div class="p-4 w-full">
                             <select v-model="form.priority_id"
-                                class="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                                class="h-full rounded-md rounded-r border-t border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700  leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Priority</option>
                                 <option v-for="priority in priorities"  :value="priority.id">{{ priority.name_en }}</option>
                             </select>
+                        </div>
+                        <div class="p-4 w-full">
                             <select v-model="form.platform"
-                                class="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                                class="h-full rounded-md rounded-r border-t border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700  leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Platform</option>
                                 <option value="android">Android</option>
                                 <option value="ios">IOS</option>
@@ -117,23 +123,29 @@ function destroy(id) {
                             </select>
                         </div>
                     </div>
-                    <div class="py-2 flex">
-                        <div class="flex pl-4">
+                    <div class="flex items-stretch">
+                        <div class="p-4 w-full">
                             <select v-model="form.project_id"
-                                class="h-full rounded-md border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-auto bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                                class="h-full rounded-md border-t border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="">Select Project</option>
                                 <option v-for="project in projects"  :value="project.id">{{ project.name }}</option>
                             </select>
+                        </div>
+                        <div class="p-4 w-full">
                             <VueCtkDateTimePicker color="#2563EB" :only-date="true" button-color="#54cc96" :inline="false"
                                                   v-model="form.date" format="YYYY-MM-DD" formatted="YYYY-MM-DD">
                             </VueCtkDateTimePicker>
+                        </div>
+                        <div class="p-4 w-full">
                             <input
                                 type="search"
                                 v-model="form.search"
-                                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300
+                                class="rounded-md shadow-sm border-gray-400 w-full focus:border-indigo-400
                                     focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 placeholder="Search"
                             />
+                        </div>
+                        <div class="p-4 w-full">
                             <BaseButton
                                 label="Search"
                                 type="submit"
