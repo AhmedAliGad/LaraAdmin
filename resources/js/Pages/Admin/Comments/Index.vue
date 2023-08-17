@@ -156,7 +156,7 @@ const form = useForm({
                                 </div>
                             </div>
                             <div class="mb-2 mt-2">
-                                <label>Attachments</label>
+                                <label class="text-xl leading-tight">Attachments</label>
                                 <div v-for="attachment in comment.attachments" class="px-5 py-4 bg-gray-200">
                                     <a target="_blank" :href="attachment.file_path">{{ attachment.file_name+'.'+attachment.type }}</a>
                                     <hr />
@@ -179,7 +179,7 @@ const form = useForm({
                 </vue-collapsible-panel>
             </vue-collapsible-panel-group>
             <BaseDivider></BaseDivider>
-            <BaseButton v-if="ticket.status_id != 4"
+            <BaseButton v-if="ticket.status_id !== 4"
                 :route-name="route('tickets.comments.create', ticket.id)"
                 color="info"
                 label="Add Reply"
