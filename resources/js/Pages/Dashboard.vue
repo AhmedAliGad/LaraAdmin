@@ -1,30 +1,38 @@
 <script setup>
-import { Head } from '@inertiajs/vue3'
-import { computed, ref, onMounted } from 'vue'
-import { useMainStore } from '@/Stores/main'
+import {Head, Link, usePage, router} from '@inertiajs/vue3'
 import {
-  mdiAccountMultiple,
-  mdiCartOutline,
-  mdiChartTimelineVariant,
-    mdiAccountGroup,
-  mdiMonitorCellphone,
-  mdiReload,
-  mdiGithub,
-  mdiChartPie
+    mdiAccountMultiple, mdiBallot, mdiChartTimelineVariant, mdiHandshake, mdiApps, mdiLogout,
 } from '@mdi/js'
 import SectionMain from '@/Components/SectionMain.vue'
 import CardBoxWidget from '@/Components/CardBoxWidget.vue'
 import CardBox from '@/Components/CardBox.vue'
-import TableSampleClients from '@/Components/TableSampleClients.vue'
 import LayoutAuthenticated from '@/Layouts/LayoutAuthenticated.vue'
 import SectionTitleLineWithButton from '@/Components/SectionTitleLineWithButton.vue'
+import {onMounted} from "vue";
 
-const mainStore = useMainStore()
+const role = usePage().props.auth.user.role
 
-/* Fetch sample data */
-mainStore.fetch('clients')
-mainStore.fetch('history')
-
+const props = defineProps({
+    tickets: {
+        type: Object,
+        default: () => ({}),
+    },
+    total_clients: {
+        type: Number
+    },
+    total_companies: {
+        type: Number
+    },
+    total_projects: {
+        type: Number
+    },
+    total_tickets: {
+        type: Number
+    }
+})
+/*const logoutItem = onMounted(() => {
+        router.reload({only: ['someProp']})
+})*/
 </script>
 
 <template>
@@ -38,46 +46,82 @@ mainStore.fetch('history')
       >
       </SectionTitleLineWithButton>
 
-      <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6">
-        <CardBoxWidget
-          trend="12%"
-          trend-type="up"
-          color="text-emerald-500"
+      <div v-if="role == 'admin'" class="grid grid-cols-1 gap-4 lg:grid-cols-4 mb-4">
+          <CardBoxWidget
+          color="text-blue-500"
           :icon="mdiAccountMultiple"
-          :number="512"
+          :number="total_clients"
           label="Clients"
         />
-        <CardBoxWidget
-          trend="12%"
-          trend-type="down"
+          <CardBoxWidget
           color="text-blue-500"
-          :icon="mdiCartOutline"
-          :number="7770"
-          prefix="$"
-          label="Sales"
+          :icon="mdiHandshake"
+          :number="total_companies"
+          label="Companies"
         />
-        <CardBoxWidget
-          trend="Overflow"
-          trend-type="alert"
-          color="text-red-500"
-          :icon="mdiChartTimelineVariant"
-          :number="256"
-          suffix="%"
-          label="Performance"
+          <CardBoxWidget
+          color="text-blue-500"
+          :icon="mdiApps"
+          :number="total_projects"
+          label="Projects"
         />
+          <CardBoxWidget
+              color="text-blue-500"
+              :icon="mdiBallot"
+              :number="total_tickets"
+              label="Tickets"
+          />
       </div>
 
       <SectionTitleLineWithButton
-          :icon="mdiAccountGroup"
-        title="Clients"
+          :icon="mdiBallot"
+          title="Latest Tickets"
       />
-      <CardBox
-        :icon="mdiMonitorCellphone"
-        title="Responsive table"
-        has-table
-      >
-        <TableSampleClients />
-      </CardBox>
+        <CardBox class="mb-6" has-table>
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Project</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Platform</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr v-for="ticket in tickets" :key="ticket.id">
+                    <td>
+                        {{ ticket.id }}
+                    </td>
+                    <td data-label="Name">
+                        <Link
+                            :href="route('tickets.show', ticket.id)"
+                            class=" no-underline hover:underline text-cyan-600 dark:text-cyan-400">
+                            {{ ticket.title }}
+                        </Link>
+                    </td>
+                    <td data-label="project">
+                        {{ ticket.project.name }}
+                    </td>
+                    <td data-label="category">
+                        {{ ticket.category ? ticket.category.name_en : ' - - ' }}
+                    </td>
+                    <td data-label="status">
+                        {{ ticket.status.name_en }}
+                    </td>
+                    <td data-label="priority">
+                        {{ ticket.priority ? ticket.priority.name_en : ' - - ' }}
+                    </td>
+                    <td data-label="device_os">
+                        {{ ticket.device_os }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </CardBox>
     </SectionMain>
   </LayoutAuthenticated>
 </template>

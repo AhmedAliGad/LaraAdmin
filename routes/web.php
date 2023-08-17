@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CloseReasonsController;
+use App\Http\Controllers\Admin\CommentsController;
 use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\PrioritiesController;
 use App\Http\Controllers\Admin\ProjectsController;
@@ -8,6 +9,11 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StatusesController;
 use App\Http\Controllers\Admin\SupportTeamsController;
 use App\Http\Controllers\Admin\TicketsController;
+use App\Models\Company;
+use App\Models\Project;
+use App\Models\Ticket;
+use App\Models\User;
+use App\Traits\Meta;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -27,7 +33,16 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    Meta::addMeta('title', 'Dashboard');
+    Meta::addMeta('description', 'FNDEV Ticket System Dashboard');
+    return Inertia::render('Dashboard', [
+        'tickets' => Ticket::latest()->limit(10)
+            ->with(['status:id,name_en', 'category:id,name_en', 'priority:id,name_en', 'project:id,name'])->get(),
+        'total_clients' => User::whereIn('role', ['client', 'supervisor'])->count(),
+        'total_companies' => Company::count(),
+        'total_projects' => Project::count(),
+        'total_tickets' => Ticket::count()
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['auth']], function () {
@@ -42,6 +57,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('projects', ProjectsController::class);
     /* ====== Tickets =======*/
     Route::resource('tickets', TicketsController::class);
+    Route::get('/tickets_report', [TicketsController::class, 'reports'])->name('tickets.reports');
+    Route::get('/tickets_export', [TicketsController::class, 'export'])->name('tickets.export');
+    /* ====== Comments =======*/
+    Route::resource('tickets.comments', CommentsController::class);
     /* ====== Statuses =======*/
     Route::resource('statuses', StatusesController::class, ['except' => 'show']);
     /* ====== Priorities =======*/

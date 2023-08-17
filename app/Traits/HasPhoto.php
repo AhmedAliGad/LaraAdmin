@@ -87,7 +87,7 @@ trait HasPhoto
             return null;
         }
 
-        return env('AWS_TICKETS_URL').$photo->path;
+        return asset('storage/' . $photo->path);
     }
 
     /**

@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Status extends Model
 {
     protected $fillable = ['name_en', 'name_ar', 'color'];
+
+    public function tickets(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }

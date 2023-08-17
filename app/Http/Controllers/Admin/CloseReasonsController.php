@@ -17,7 +17,7 @@ class CloseReasonsController extends Controller
         $close_reasons = (new CloseReason())->newQuery();
 
         if (request()->has('search')) {
-            $close_reasons->where('name_en', 'Like', '%'.request()->input('search').'%');
+            $close_reasons->where('title_en', 'Like', '%'.request()->input('search').'%');
         }
 
         if (request()->query('sort')) {
@@ -45,7 +45,7 @@ class CloseReasonsController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/CloseReasons/Create');
     }
 
     /**
@@ -53,7 +53,9 @@ class CloseReasonsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        CloseReason::create($request->input());
+
+        return redirect()->route('close_reasons.index')->with('message', 'Added Successfully !');
     }
 
     /**
@@ -69,7 +71,9 @@ class CloseReasonsController extends Controller
      */
     public function edit(CloseReason $closeReason)
     {
-        //
+        return Inertia::render('Admin/CloseReasons/Edit', [
+            'closeReason' => $closeReason
+        ]);
     }
 
     /**
@@ -77,7 +81,9 @@ class CloseReasonsController extends Controller
      */
     public function update(Request $request, CloseReason $closeReason)
     {
-        //
+        $closeReason->update($request->input());
+
+        return redirect()->route('close_reasons.index')->with('message', 'Updated Successfully !');
     }
 
     /**
@@ -85,6 +91,12 @@ class CloseReasonsController extends Controller
      */
     public function destroy(CloseReason $closeReason)
     {
-        //
+        if (count($closeReason->tickets)) {
+            return redirect()->back()->with('alert', 'Sorry Can\'t delete this item !');
+        } else {
+            $closeReason->delete();
+
+            return redirect()->back()->with('message', 'Deleted Successfully !');
+        }
     }
 }

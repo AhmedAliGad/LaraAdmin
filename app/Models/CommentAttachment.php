@@ -9,6 +9,8 @@ class CommentAttachment extends Model
 {
     protected $fillable = ['file_name', 'comment_id', 'path', 'type'];
 
+    protected $appends = ['file_path'];
+
     protected static function boot()
     {
         parent::boot();
@@ -21,7 +23,8 @@ class CommentAttachment extends Model
 
     public function getFilePathAttribute()
     {
-        return env('AWS_TICKETS_URL').$this->path;
+        return asset('storage/' . $this->path);
+        //return env('AWS_TICKETS_URL').$this->path;
     }
 
     public function comment(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -32,7 +32,7 @@ class CompaniesController extends Controller
             $companies->latest();
         }
 
-        $companies = $companies->paginate(5)->onEachSide(2)->appends(request()->query());
+        $companies = $companies->paginate(10)->onEachSide(2)->appends(request()->query());
 
         return Inertia::render('Admin/Companies/Index', [
             'companies' => $companies,
@@ -45,7 +45,7 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Companies/Create');
     }
 
     /**
@@ -53,7 +53,13 @@ class CompaniesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $company = Company::create($request->input());
+
+        if ($request->hasFile('image')) {
+            $company->storeImage($request->file('image')->store('companies', 'public'));
+        }
+
+        return redirect()->route('companies.index')->with('message', 'Added Successfully !');
     }
 
     /**
@@ -61,7 +67,10 @@ class CompaniesController extends Controller
      */
     public function show(Company $company)
     {
-        //
+        $projects = $company->projects()->withCount('tickets')->get();
+
+        return Inertia::render('Admin/Companies/Projects', [
+            'company' => $company, 'projects' => $projects]);
     }
 
     /**
@@ -69,7 +78,7 @@ class CompaniesController extends Controller
      */
     public function edit(Company $company)
     {
-        //
+        return Inertia::render('Admin/Companies/Edit', ['company' => $company]);
     }
 
     /**
@@ -77,7 +86,13 @@ class CompaniesController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        //
+        $company->update($request->input());
+
+        if ($request->hasFile('image')) {
+            $company->updateImage($request->file('image')->store('companies', 'public'));
+        }
+
+        return redirect()->route('companies.index')->with('message', 'Updated Successfully !');
     }
 
     /**
@@ -85,6 +100,12 @@ class CompaniesController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        if (count($company->projects)) {
+            return redirect()->back()->with('alert', 'Sorry Can\'t delete this item !');
+        } else {
+            $company->delete();
+
+            return redirect()->back()->with('message', 'Deleted Successfully !');
+        }
     }
 }

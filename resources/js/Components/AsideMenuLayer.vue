@@ -1,5 +1,5 @@
 <script setup>
-import { router } from '@inertiajs/vue3'
+import {router, usePage} from '@inertiajs/vue3'
 import { mdiLogout, mdiClose } from '@mdi/js'
 import { computed } from 'vue'
 import { useLayoutStore } from '@/Stores/layout.js'
@@ -8,6 +8,8 @@ import AsideMenuList from '@/Components/AsideMenuList.vue'
 import AsideMenuItem from '@/Components/AsideMenuItem.vue'
 import BaseIcon from '@/Components/BaseIcon.vue'
 import menu from "@/menu";
+import client from "@/client";
+import supportMenu from "@/supportMenu";
 
 defineProps({
   menu: {
@@ -21,6 +23,8 @@ const emit = defineEmits(['menu-click'])
 const layoutStore = useLayoutStore()
 
 const styleStore = useStyleStore()
+
+const role = usePage().props.auth.user.role
 
 const logoutItem = computed(() => ({
   label: 'Logout',
@@ -67,10 +71,18 @@ const menuClick = (event, item) => {
         :class="styleStore.darkMode ? 'aside-scrollbars-[slate]' : styleStore.asideScrollbarsStyle"
         class="flex-1 overflow-y-auto overflow-x-hidden"
       >
-        <AsideMenuList
-          :menu="menu"
-          @menu-click="menuClick"
+        <AsideMenuList v-if="role == 'support'"
+                      :menu="supportMenu"
+                      @menu-click="menuClick"
         />
+          <AsideMenuList v-else-if="(role == 'client' || role == 'supervisor')"
+                         :menu="client"
+                         @menu-click="menuClick"
+          />
+          <AsideMenuList v-else
+                         :menu="menu"
+                         @menu-click="menuClick"
+          />
       </div>
 
       <ul>

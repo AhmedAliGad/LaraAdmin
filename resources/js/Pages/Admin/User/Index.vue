@@ -73,15 +73,8 @@ function destroy(id) {
               <input
                 type="search"
                 v-model="form.search"
-                class="
-                  rounded-md
-                  shadow-sm
-                  border-gray-300
-                  focus:border-indigo-300
-                  focus:ring
-                  focus:ring-indigo-200
-                  focus:ring-opacity-50
-                "
+                class="rounded-md shadow-sm border-gray-400 w-full focus:border-indigo-400
+                        focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:text-blue-600"
                 placeholder="Search"
               />
               <BaseButton
@@ -137,7 +130,7 @@ function destroy(id) {
                   <BaseButton
                     :route-name="route('user.edit', user.id)"
                     color="info"
-                    :icon="mdiSquareEditOutline"
+                    label="Edit"
                     small
                   />
                   <BaseButton

@@ -45,7 +45,7 @@ class PrioritiesController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Priorities/Create');
     }
 
     /**
@@ -53,7 +53,9 @@ class PrioritiesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Priority::create($request->input());
+
+        return redirect()->route('priorities.index')->with('message', 'Added Successfully !');
     }
 
     /**
@@ -69,7 +71,9 @@ class PrioritiesController extends Controller
      */
     public function edit(Priority $priority)
     {
-        //
+        return Inertia::render('Admin/Priorities/Edit', [
+            'priority' => $priority
+        ]);
     }
 
     /**
@@ -77,7 +81,9 @@ class PrioritiesController extends Controller
      */
     public function update(Request $request, Priority $priority)
     {
-        //
+        $priority->update($request->input());
+
+        return redirect()->route('priorities.index')->with('message', 'Updated Successfully !');
     }
 
     /**
@@ -85,6 +91,12 @@ class PrioritiesController extends Controller
      */
     public function destroy(Priority $priority)
     {
-        //
+        if (count($priority->tickets)) {
+            return redirect()->back()->with('alert', 'Sorry Can\'t delete this item !');
+        } else {
+            $priority->delete();
+
+            return redirect()->back()->with('message', 'Deleted Successfully !');
+        }
     }
 }

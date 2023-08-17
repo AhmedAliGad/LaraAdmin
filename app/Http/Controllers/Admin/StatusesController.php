@@ -32,7 +32,7 @@ class StatusesController extends Controller
             $statuses->latest();
         }
 
-        $statuses = $statuses->paginate(5)->onEachSide(2)->appends(request()->query());
+        $statuses = $statuses->paginate(10)->onEachSide(2)->appends(request()->query());
 
         return Inertia::render('Admin/Statuses/Index', [
             'statuses' => $statuses,
@@ -45,7 +45,7 @@ class StatusesController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Statuses/Create');
     }
 
     /**
@@ -53,7 +53,9 @@ class StatusesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $status = Status::create($request->input());
+
+        return redirect()->route('statuses.index')->with('message', 'Added Successfully !');
     }
 
     /**
@@ -69,7 +71,9 @@ class StatusesController extends Controller
      */
     public function edit(Status $status)
     {
-        //
+        return Inertia::render('Admin/Statuses/Edit', [
+            'status' => $status
+        ]);
     }
 
     /**
@@ -77,7 +81,9 @@ class StatusesController extends Controller
      */
     public function update(Request $request, Status $status)
     {
-        //
+        $status->update($request->input());
+
+        return redirect()->route('statuses.index')->with('message', 'Updated Successfully !');
     }
 
     /**
@@ -85,6 +91,12 @@ class StatusesController extends Controller
      */
     public function destroy(Status $status)
     {
-        //
+        if (count($status->tickets)) {
+            return redirect()->back()->with('alert', 'Sorry Can\'t delete this item !');
+        } else {
+            $status->delete();
+
+            return redirect()->back()->with('message', 'Deleted Successfully !');
+        }
     }
 }

@@ -1,11 +1,8 @@
 <script setup>
 import { Head, Link, useForm } from "@inertiajs/vue3"
 import {
-  mdiMonitorAccount,
-  mdiPlus,
-  mdiSquareEditOutline,
-  mdiTrashCan,
-  mdiAlertBoxOutline,
+    mdiMonitorAccount, mdiPlus,
+    mdiTrashCan, mdiAlertBoxOutline,
 } from "@mdi/js"
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue"
 import SectionMain from "@/Components/SectionMain.vue"
@@ -73,15 +70,8 @@ function destroy(id) {
               <input
                 type="search"
                 v-model="form.search"
-                class="
-                  rounded-md
-                  shadow-sm
-                  border-gray-300
-                  focus:border-indigo-300
-                  focus:ring
-                  focus:ring-indigo-200
-                  focus:ring-opacity-50
-                "
+                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring
+                                 focus:ring-indigo-200 focus:ring-opacity-50 dark:text-blue-600"
                 placeholder="Search"
               />
               <BaseButton
@@ -137,7 +127,7 @@ function destroy(id) {
                   <BaseButton
                     :route-name="route('user.edit', user.id)"
                     color="info"
-                    :icon="mdiSquareEditOutline"
+                    label="Edit"
                     small
                   />
                   <BaseButton

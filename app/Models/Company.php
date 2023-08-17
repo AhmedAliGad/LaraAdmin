@@ -11,6 +11,8 @@ class Company extends Model
 
     protected $fillable = ['name', 'active'];
 
+    protected $appends = ['image'];
+
     public function projects(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Project::class);

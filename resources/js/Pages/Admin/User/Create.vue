@@ -16,18 +16,25 @@ import BaseButton from '@/Components/BaseButton.vue'
 import BaseButtons from '@/Components/BaseButtons.vue'
 
 const props = defineProps({
-  roles: {
-    type: Object,
-    default: () => ({}),
-  }
+    companies: {
+        type: Object,
+        default: () => ({}),
+    },
+    projects: {
+        type: Object,
+        default: () => ({}),
+    },
 })
 
 const form = useForm({
   name: '',
   email: '',
+  phone: '',
   password: '',
   password_confirmation: '',
-  role: ''
+  role: '',
+  company_id: '',
+  projects: [],
 })
 </script>
 
@@ -86,6 +93,22 @@ const form = useForm({
         </FormField>
 
         <FormField
+              label="Phone"
+              :class="{ 'text-red-400': form.errors.phone }"
+          >
+              <FormControl
+                  v-model="form.phone"
+                  type="text"
+                  placeholder="Enter Phone"
+                  :error="form.errors.phone"
+              >
+                  <div class="text-red-400 text-sm" v-if="form.errors.phone">
+                      {{ form.errors.phone }}
+                  </div>
+              </FormControl>
+          </FormField>
+
+        <FormField
           label="Password"
           :class="{ 'text-red-400': form.errors.password }"
         >
@@ -100,44 +123,38 @@ const form = useForm({
             </div>
           </FormControl>
         </FormField>
-
-        <FormField
-          label="Password Confirmation"
-          :class="{ 'text-red-400': form.errors.password }"
-        >
-          <FormControl
-            v-model="form.password_confirmation"
-            type="password"
-            placeholder="Enter Password Confirmation"
-            :error="form.errors.password"
-          >
-            <div class="text-red-400 text-sm" v-if="form.errors.password">
-              {{ form.errors.password }}
-            </div>
-          </FormControl>
-        </FormField>
-
         <BaseDivider />
-
-        <FormField
-          label="Role"
-          wrap-body
-        >
-          <FormCheckRadio
-              v-model="form.role"
-              type="radio"
-              label="Admin"
-              name="role"
-              inputValue="admin"
-          />
-            <FormCheckRadio
-                v-model="form.role"
-                type="radio"
-                label="Support"
-                name="role"
-                inputValue="support"
-            />
-        </FormField>
+          <FormField
+              label="Role"
+              :class="{ 'text-red-400': form.errors.role }"
+          >
+              <div class="relative">
+                  <select v-model="form.role"
+                          class="px-3 py-2 max-w-full focus:ring focus:outline-none rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 border-gray-700">
+                      <option value="" selected disabled>Select Role</option>
+                      <option value="client">Client</option>
+                      <option value="supervisor">Supervisor</option>
+                  </select>
+              </div>
+          </FormField>
+          <div class="text-red-400 text-sm" v-if="form.errors.role">
+              {{ form.errors.role }}
+          </div>
+          <FormField
+              label="Company"
+              :class="{ 'text-red-400': form.errors.company_id }"
+          >
+              <div class="relative">
+                  <select v-model="form.company_id"
+                          class="px-3 py-2 max-w-full focus:ring focus:outline-none rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 border-gray-700">
+                      <option value="" selected disabled>Select Company</option>
+                      <option v-for="company in companies"  :value="company.id">{{ company.name }}</option>
+                  </select>
+              </div>
+          </FormField>
+          <div class="text-red-400 text-sm" v-if="form.errors.company_id">
+              {{ form.errors.company_id }}
+          </div>
 
         <template #footer>
           <BaseButtons>

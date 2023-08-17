@@ -1,5 +1,5 @@
 import {
-    mdiMonitor, mdiListStatus, mdiAccountGroup, mdiCogs,
+    mdiMonitor, mdiListStatus, mdiAccountGroup, mdiCogs, mdiMicrosoftExcel,
     mdiHandshake, mdiApps, mdiBallot, mdiSort, mdiCloseBoxMultiple
 } from '@mdi/js'
 
@@ -39,6 +39,11 @@ export default [
         label: 'Tickets'
     },
     {
+        route: 'tickets.reports',
+        icon: mdiMicrosoftExcel,
+        label: 'Tickets Report'
+    },
+    {
         route: 'statuses.index',
         icon: mdiListStatus,
         label: 'Statuses'
@@ -54,8 +59,21 @@ export default [
         label: 'Close Reasons'
     },
     {
-        route: 'settings.edit',
+        label: "Settings",
         icon: mdiCogs,
-        label: 'General Settings'
-    }
+        children: [
+            {
+                route: 'settings.edit',
+                label: 'General Settings'
+            },
+            {
+                label: "Terms",
+                href: route('settings.edit', {'target':'terms'}),
+            },
+            {
+                label: "Privacy",
+                href: route('settings.edit', {'target':'privacy'}),
+            },
+        ],
+    },
 ]

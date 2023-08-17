@@ -76,6 +76,7 @@ module.exports = {
         { values: theme('asideScrollbars') }
       )
     }),
-    require('@tailwindcss/line-clamp')
+      require("tw-elements/dist/plugin.cjs")
+    //require('@tailwindcss/line-clamp')
   ]
 }

@@ -132,11 +132,8 @@ class Ticket extends Model
             $filters['device_os'] ?? false,
             fn ($query, $value) => $query->where('device_os', $value)
         )->when(
-            $filters['date_from'] ?? false,
-            fn ($query, $value) => $query->whereDate('created_at', '>=', $value)
-        )->when(
-            $filters['date_to'] ?? false,
-            fn ($query, $value) => $query->whereDate('created_at', '<=', $value)
+            $filters['date'] ?? false,
+            fn ($query, $value) => $query->whereDate('created_at', $value)
         );
     }
 

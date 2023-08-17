@@ -1,8 +1,7 @@
 <script setup>
 import { Head, useForm } from "@inertiajs/vue3"
 import {
-    mdiPlus, mdiSquareEditOutline,
-    mdiAlertBoxOutline, mdiListStatus,
+    mdiPlus, mdiAlertBoxOutline, mdiListStatus
 } from "@mdi/js"
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue"
 import SectionMain from "@/Components/SectionMain.vue"
@@ -57,6 +56,13 @@ function destroy(id) {
                 />
             </SectionTitleLineWithButton>
             <NotificationBar
+                v-if="$page.props.flash.alert"
+                color="danger"
+                :icon="mdiAlertBoxOutline"
+            >
+                {{ $page.props.flash.alert }}
+            </NotificationBar>
+            <NotificationBar
                 v-if="$page.props.flash.message"
                 color="success"
                 :icon="mdiAlertBoxOutline"
@@ -71,7 +77,7 @@ function destroy(id) {
                                 type="search"
                                 v-model="form.search"
                                 class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring
-                                 focus:ring-indigo-200 focus:ring-opacity-50"
+                                 focus:ring-indigo-200 focus:ring-opacity-50 dark:text-blue-600"
                                 placeholder="Search"
                             />
                             <BaseButton
@@ -107,8 +113,14 @@ function destroy(id) {
                                 <BaseButton
                                     :route-name="route('statuses.edit', status.id)"
                                     color="info"
-                                    :icon="mdiSquareEditOutline"
+                                    label="Edit"
                                     small
+                                />
+                                <BaseButton
+                                    color="danger"
+                                    label="Delete"
+                                    small
+                                    @click="destroy(status.id)"
                                 />
                             </BaseButtons>
                         </td>

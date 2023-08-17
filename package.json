@@ -18,13 +18,16 @@
         "pinia": "^2.0.17",
         "postcss": "^8.4.6",
         "tailwindcss": "^3.1.0",
+        "tw-elements": "^1.0.0-beta3",
         "vite": "^3.0.0",
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^38.1.1",
-        "@ckeditor/ckeditor5-vue": "^5.1.0",
+        "@dafcoe/vue-collapsible-panel": "^0.2.0",
         "@inertiajs/vue3": "^1.0.0",
+        "@jamescoyle/vue-icon": "^0.1.2",
+        "@mayasabha/ckeditor4-vue3": "^1.0.5",
+        "@penguin3007/vue3-repeater": "^1.0.5",
         "vue-ctk-date-time-picker": "^3.0.0-alpha.0"
     }
 }

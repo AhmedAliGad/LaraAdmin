@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
+use App\Models\Project;
 use App\Models\Role;
 use App\Models\User;
 use BalajiDharma\LaravelAdminCore\Actions\User\CreateUser;
@@ -65,7 +67,13 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/User/Create');
+        $companies = Company::get(['id', 'name']);
+        $projects = Project::get(['id', 'name']);
+
+        return Inertia::render('Admin/User/Create', [
+            'companies' => $companies,
+            'projects' => $projects,
+        ]);
     }
 
     /**

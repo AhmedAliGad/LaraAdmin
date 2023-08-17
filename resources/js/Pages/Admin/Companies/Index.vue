@@ -1,11 +1,7 @@
 <script setup>
 import { Head, Link, useForm } from "@inertiajs/vue3"
 import {
-    mdiHandshake,
-  mdiPlus,
-  mdiSquareEditOutline,
-  mdiTrashCan,
-  mdiAlertBoxOutline,
+    mdiHandshake, mdiPlus, mdiAlertBoxOutline, mdiTrashCan,
 } from "@mdi/js"
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue"
 import SectionMain from "@/Components/SectionMain.vue"
@@ -60,12 +56,19 @@ function destroy(id) {
         />
       </SectionTitleLineWithButton>
       <NotificationBar
-        v-if="$page.props.flash.message"
-        color="success"
+        v-if="$page.props.flash.alert"
+        color="danger"
         :icon="mdiAlertBoxOutline"
       >
-        {{ $page.props.flash.message }}
+        {{ $page.props.flash.alert }}
       </NotificationBar>
+        <NotificationBar
+            v-if="$page.props.flash.message"
+            color="success"
+            :icon="mdiAlertBoxOutline"
+        >
+            {{ $page.props.flash.message }}
+        </NotificationBar>
       <CardBox class="mb-6" has-table>
         <form @submit.prevent="form.get(route('companies.index'))">
           <div class="py-2 flex">
@@ -73,15 +76,8 @@ function destroy(id) {
               <input
                 type="search"
                 v-model="form.search"
-                class="
-                  rounded-md
-                  shadow-sm
-                  border-gray-300
-                  focus:border-indigo-300
-                  focus:ring
-                  focus:ring-indigo-200
-                  focus:ring-opacity-50
-                "
+                class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring
+                  focus:ring-indigo-200 focus:ring-opacity-50 dark:text-blue-600"
                 placeholder="Search"
               />
               <BaseButton
@@ -133,7 +129,7 @@ function destroy(id) {
                   <BaseButton
                     :route-name="route('companies.edit', company.id)"
                     color="info"
-                    :icon="mdiSquareEditOutline"
+                    label="Edit"
                     small
                   />
                   <BaseButton
@@ -142,6 +138,12 @@ function destroy(id) {
                       label="Projects"
                       small
                   />
+                    <BaseButton
+                        color="danger"
+                        label="Delete"
+                        small
+                        @click="destroy(company.id)"
+                    />
                 </BaseButtons>
               </td>
             </tr>
