@@ -20,9 +20,13 @@ class SettingsController extends Controller
     }
     public function edit(Request $request)
     {
-        if ($request->filled('target') && in_array($request->get('target'), ['privacy', 'terms'])) {
+        if ($request->filled('target') && in_array($request->get('target'), ['privacy', 'terms', 'map'])) {
             if ($request->get('target') == 'privacy') {
                 return Inertia::render('Admin/Settings/Privacy', [
+                    'setting' => $this->setting ,
+                ]);
+            } elseif ($request->get('target') == 'map') {
+                return Inertia::render('Admin/Settings/Map', [
                     'setting' => $this->setting ,
                 ]);
             } else {

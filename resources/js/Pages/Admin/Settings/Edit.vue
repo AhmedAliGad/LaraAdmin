@@ -86,6 +86,21 @@ const form = useForm({
                     </FormControl>
                 </FormField>
                 <FormField
+                    label="Description"
+                    :class="{ 'text-red-400': form.errors.description_en }"
+                >
+                    <FormControl
+                        v-model="form.description_en"
+                        type="textarea"
+                        placeholder="Description"
+                        :error="form.errors.description_en"
+                    >
+                        <div class="text-red-400 text-sm" v-if="form.errors.description_en">
+                            {{ form.errors.description_en }}
+                        </div>
+                    </FormControl>
+                </FormField>
+                <FormField
                     label="Email"
                     :class="{ 'text-red-400': form.errors.email }"
                 >
@@ -101,32 +116,17 @@ const form = useForm({
                     </FormControl>
                 </FormField>
                 <FormField
-                    label="Name"
+                    label="Phone"
                     :class="{ 'text-red-400': form.errors.phone }"
                 >
                     <FormControl
                         v-model="form.phone"
                         type="text"
-                        placeholder="Name"
+                        placeholder="Phone"
                         :error="form.errors.phone"
                     >
                         <div class="text-red-400 text-sm" v-if="form.errors.phone">
                             {{ form.errors.phone }}
-                        </div>
-                    </FormControl>
-                </FormField>
-                <FormField
-                    label="Description"
-                    :class="{ 'text-red-400': form.errors.description_en }"
-                >
-                    <FormControl
-                        v-model="form.description_en"
-                        type="textarea"
-                        placeholder="Description"
-                        :error="form.errors.description_en"
-                    >
-                        <div class="text-red-400 text-sm" v-if="form.errors.description_en">
-                            {{ form.errors.description_en }}
                         </div>
                     </FormControl>
                 </FormField>
@@ -154,7 +154,7 @@ const form = useForm({
                         </FormField>
 
                         <button type="button"
-                            class="font-bold text-red-400 text-xs w-full text-right mb-4 focus:outline-none"
+                            class="font-bold text-red-400 text-xs w-full text-right mb-2 focus:outline-none"
                             @click="removeField()"
                         >
                             &mdash; Remove
@@ -162,7 +162,7 @@ const form = useForm({
                     </div>
 
                     <button type="button" @click="addField()"
-                        class="mb-8 text-blue-500 font-bold focus:outline-none"
+                        class="mb-2 mt-2 text-blue-500 font-bold focus:outline-none"
                     >
                         + Add
                     </button>

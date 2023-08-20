@@ -74,6 +74,10 @@ export default [
                 label: "Privacy",
                 href: route('settings.edit', {'target':'privacy'}),
             },
+            {
+                label: "Address",
+                href: route('settings.edit', {'target':'map'}),
+            },
         ],
     },
 ]

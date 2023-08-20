@@ -141,22 +141,22 @@ const form = useForm({
             <vue-collapsible-panel-group accordion v-for="(comment, index) in comments" :id="comment.id">
                 <vue-collapsible-panel :expanded="index === 0" class="px-5 py-4 rounded-t-lg border-neutral-200 bg-white dark:border-neutral-600 dark:bg-slate-900/70 dark:text-gray-700">
                     <template #title>
-                        {{  comment.user.name +' ( '+ comment.user.role +' )' }}
+                        <div class="text-blue-600">{{  comment.user.name +' ( '+ comment.user.role +' )' }}</div>
                     </template>
                     <template #content class="px-5 py-4 bg-gray-50">
                         <div v-if="comment.attachments.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-2">
                             <div class="mb-2 mt-2">
-                                <label class="text-xl leading-tight">Reply Time</label>
+                                <label class="text-[hsl(0deg, 0%, 21%)] leading-tight">Reply Time</label>
                                 <div class="px-5 py-4 bg-gray-200">
                                     {{ new Date(comment.created_at).toLocaleString()}}
                                 </div>
-                                <label class="text-xl leading-tight">Reply Body</label>
+                                <label class="text-[hsl(0deg, 0%, 21%)] leading-tight">Reply Body</label>
                                 <div class="px-5 py-4 bg-gray-200">
                                     {{ comment.comment_text}}
                                 </div>
                             </div>
                             <div class="mb-2 mt-2">
-                                <label class="text-xl leading-tight">Attachments</label>
+                                <label class="text-[hsl(0deg, 0%, 21%)] leading-tight">Attachments</label>
                                 <div v-for="attachment in comment.attachments" class="px-5 py-4 bg-gray-200">
                                     <a target="_blank" :href="attachment.file_path">{{ attachment.file_name+'.'+attachment.type }}</a>
                                     <hr />
@@ -165,11 +165,11 @@ const form = useForm({
                         </div>
                         <div v-else >
                             <div class="mb-2 mt-2">
-                                <label class="text-xl leading-tight">Reply Time </label>
+                                <label class="text-[hsl(0deg, 0%, 21%)] leading-tight">Reply Time </label>
                                 <div class="px-5 py-4 bg-gray-200">
                                     {{ new Date(comment.created_at).toLocaleString()}}
                                 </div>
-                                <label class="text-xl leading-tight">Reply Body </label>
+                                <label class="text-[hsl(0deg, 0%, 21%)] leading-tight">Reply Body </label>
                                 <div class="px-5 py-4 bg-gray-200">
                                     {{ comment.comment_text}}
                                 </div>

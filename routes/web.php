@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('companies', CompaniesController::class);
     /* ====== Projects =======*/
     Route::resource('projects', ProjectsController::class);
+    Route::get('projects_list', [ProjectsController::class, 'projectsList'])->name('projects_list');
     /* ====== Tickets =======*/
     Route::resource('tickets', TicketsController::class);
     Route::get('/tickets_report', [TicketsController::class, 'reports'])->name('tickets.reports');

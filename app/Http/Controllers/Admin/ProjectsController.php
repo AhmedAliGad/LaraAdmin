@@ -134,4 +134,11 @@ class ProjectsController extends Controller
             return redirect()->back()->with('message', 'Deleted Successfully !');
         }
     }
+
+    public function projectsList(Request $request)
+    {
+        $projects = Project::where('company_id', $request->get('company_id'))->get(['id', 'name']);
+
+        return response()->json(['data' => $projects], 200);
+    }
 }
