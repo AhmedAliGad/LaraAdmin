@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::name('settings_update')->put('settings/edit', [SettingsController::class, 'update']);
     /* ====== Settings =======*/
     Route::name('tickets_chart')->get('tickets_chart', [ReportsController::class, 'ticketsChart']);
+    Route::name('company_chart')->get('company_chart', [ReportsController::class, 'companyChart']);
 });
 
 require __DIR__.'/auth.php';

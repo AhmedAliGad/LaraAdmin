@@ -2,11 +2,12 @@
 
 namespace App\Charts;
 
+use App\Models\Company;
 use App\Models\Ticket;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Carbon\Carbon;
 
-class MonthlyTicketsChart
+class MonthlyCompanyTicketsChart
 {
     protected $chart;
 
@@ -15,10 +16,12 @@ class MonthlyTicketsChart
         $this->chart = $chart;
     }
 
-    public function build(): array
+    public function build($company_id): array
     {
         $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        $tickets = Ticket::get(['id', 'created_at'])->groupBy(function ($date) {
+        $company = Company::where('id', $company_id)->first();
+        $projects = ($company && $company->projects) ? $company->projects->pluck('id') : [];
+        $tickets = Ticket::whereIN('project_id', $projects)->get(['id', 'created_at'])->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('m');
         });
         $ticketsCount = [];
@@ -35,7 +38,7 @@ class MonthlyTicketsChart
         }
         $items = array_values($chartData);
         return $this->chart->barChart()
-            ->setTitle('System Tickets during season.')
+            ->setTitle(($company ? $company->name : ' ').' Tickets during season.')
             ->addData('Number of Tickets', $items)
             ->setXAxis($month)
             ->toVue();

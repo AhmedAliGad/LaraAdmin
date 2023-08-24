@@ -50,6 +50,10 @@ export default [
                 route: 'tickets_chart',
                 label: 'Tickets Chart'
             },
+            {
+                route: 'company_chart',
+                label: 'Company Chart'
+            },
         ],
     },
     {
