@@ -1,6 +1,6 @@
 <script setup>
 import { Head, useForm } from "@inertiajs/vue3"
-import { mdiAccountKey, mdiArrowLeftBoldOutline } from "@mdi/js"
+import {mdiArrowLeftBoldOutline, mdiDatabasePlus} from "@mdi/js"
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue"
 import SectionMain from "@/Components/SectionMain.vue"
 import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue"
@@ -35,7 +35,7 @@ const form = useForm({
         <Head title="Add Project" />
         <SectionMain>
             <SectionTitleLineWithButton
-                :icon="mdiAccountKey"
+                :icon="mdiDatabasePlus"
                 title="Add Project"
                 main
             >

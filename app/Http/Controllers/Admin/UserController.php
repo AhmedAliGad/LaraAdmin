@@ -68,11 +68,9 @@ class UserController extends Controller
     public function create()
     {
         $companies = Company::get(['id', 'name']);
-        $projects = Project::get(['id', 'name']);
 
         return Inertia::render('Admin/User/Create', [
             'companies' => $companies,
-            'projects' => $projects,
         ]);
     }
 
@@ -84,7 +82,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        User::create($request->input());
+        User::create($request->except('password') + ['password' => bcrypt($request->input('password'))]);
 
         return redirect()->route('user.index')->with('message', __('User created successfully.'));
     }
@@ -115,13 +113,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all()->pluck("name","id");
-        $userHasRoles = array_column(json_decode($user->roles, true), 'id');
+        $companies = Company::get(['id', 'name']);
 
         return Inertia::render('Admin/User/Edit', [
-            'user' => $user,
-            'roles' => $roles,
-            'userHasRoles' => $userHasRoles,
+            'user' => $user, 'companies' => $companies, 'projects' => $user->projects()
         ]);
     }
 
@@ -135,7 +130,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user, UpdateUser $updateUser)
     {
-        $updateUser->handle((object) $request->all(), $user);
+        $user->update($request->except('password'));
 
         return redirect()->route('user.index')
                         ->with('message', __('User updated successfully.'));

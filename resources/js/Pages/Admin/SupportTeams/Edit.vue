@@ -14,20 +14,13 @@ import FormCheckRadioGroup from '@/Components/FormCheckRadioGroup.vue'
 import BaseDivider from '@/Components/BaseDivider.vue'
 import BaseButton from '@/Components/BaseButton.vue'
 import BaseButtons from '@/Components/BaseButtons.vue'
+import FormCheckRadio from "@/Components/FormCheckRadio.vue";
 
 const props = defineProps({
   user: {
     type: Object,
     default: () => ({}),
   },
-  roles: {
-    type: Object,
-    default: () => ({}),
-  },
-  userHasRoles: {
-    type: Object,
-    default: () => ({}),
-  }
 })
 
 const form = useForm({
@@ -35,22 +28,21 @@ const form = useForm({
   name: props.user.name,
   email: props.user.email,
   password: '',
-  password_confirmation: '',
-  roles: props.userHasRoles
+  role: props.user.role
 })
 </script>
 
 <template>
   <LayoutAuthenticated>
-    <Head title="Update user" />
+    <Head title="Update Member" />
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiAccountKey"
-        title="Update user"
+        title="Update Member"
         main
       >
         <BaseButton
-          :route-name="route('user.index')"
+          :route-name="route('support_teams.index')"
           :icon="mdiArrowLeftBoldOutline"
           label="Back"
           color="white"
@@ -60,7 +52,7 @@ const form = useForm({
       </SectionTitleLineWithButton>
       <CardBox
         form
-        @submit.prevent="form.post(route('user.update', props.user.id))"
+        @submit.prevent="form.post(route('support_teams.update', props.user.id))"
       >
         <FormField
           label="Enter Name"
@@ -110,35 +102,28 @@ const form = useForm({
           </FormControl>
         </FormField>
 
-        <FormField
-          label="Password Confirmation"
-          :class="{ 'text-red-400': form.errors.password }"
-        >
-          <FormControl
-            v-model="form.password_confirmation"
-            type="password"
-            placeholder="Enter Password Confirmation"
-            :error="form.errors.password"
-          >
-            <div class="text-red-400 text-sm" v-if="form.errors.password">
-              {{ form.errors.password }}
-            </div>
-          </FormControl>
-        </FormField>
 
         <BaseDivider />
 
-        <FormField
-          label="Roles"
-          wrap-body
-        >
-          <FormCheckRadioGroup
-            v-model="form.roles"
-            name="roles"
-            is-column
-            :options="props.roles"
-          />
-        </FormField>
+          <FormField
+              label="Role"
+              wrap-body
+          >
+              <FormCheckRadio
+                  v-model="form.role"
+                  type="radio"
+                  label="Admin"
+                  name="role"
+                  inputValue="admin"
+              />
+              <FormCheckRadio
+                  v-model="form.role"
+                  type="radio"
+                  label="Support"
+                  name="role"
+                  inputValue="support"
+              />
+          </FormField>
 
         <template #footer>
           <BaseButtons>

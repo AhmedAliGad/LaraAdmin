@@ -1,5 +1,5 @@
 import {
-    mdiMonitor, mdiListStatus, mdiAccountGroup, mdiCogs, mdiMicrosoftExcel,
+    mdiMonitor, mdiListStatus, mdiAccountGroup, mdiCogs, mdiFileChart,
     mdiHandshake, mdiApps, mdiBallot, mdiSort, mdiCloseBoxMultiple
 } from '@mdi/js'
 
@@ -39,9 +39,18 @@ export default [
         label: 'Tickets'
     },
     {
-        route: 'tickets.reports',
-        icon: mdiMicrosoftExcel,
-        label: 'Tickets Report'
+        label: "Reports",
+        icon: mdiFileChart,
+        children: [
+            {
+                route: 'tickets.reports',
+                label: 'Tickets Report'
+            },
+            {
+                route: 'tickets_chart',
+                label: 'Tickets Chart'
+            },
+        ],
     },
     {
         route: 'statuses.index',

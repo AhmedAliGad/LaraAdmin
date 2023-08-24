@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CommentsController;
 use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\PrioritiesController;
 use App\Http\Controllers\Admin\ProjectsController;
+use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StatusesController;
 use App\Http\Controllers\Admin\SupportTeamsController;
@@ -71,6 +72,8 @@ Route::group(['middleware' => ['auth']], function () {
     /* ====== Settings =======*/
     Route::name('settings.edit')->get('settings/edit', [SettingsController::class, 'edit']);
     Route::name('settings_update')->put('settings/edit', [SettingsController::class, 'update']);
+    /* ====== Settings =======*/
+    Route::name('tickets_chart')->get('tickets_chart', [ReportsController::class, 'ticketsChart']);
 });
 
 require __DIR__.'/auth.php';

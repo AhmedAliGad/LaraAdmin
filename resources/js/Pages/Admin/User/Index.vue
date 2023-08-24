@@ -133,12 +133,12 @@ function destroy(id) {
                     label="Edit"
                     small
                   />
-                  <BaseButton
-                    color="danger"
-                    :icon="mdiTrashCan"
-                    small
-                    @click="destroy(user.id)"
-                  />
+                    <BaseButton
+                        color="danger"
+                        label="Delete"
+                        small
+                        @click="destroy(user.id)"
+                    />
                 </BaseButtons>
               </td>
             </tr>

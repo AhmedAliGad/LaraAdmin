@@ -1,9 +1,6 @@
 <script setup>
 import { Head, Link, useForm } from "@inertiajs/vue3"
-import {
-  mdiAccountKey,
-  mdiArrowLeftBoldOutline
-} from "@mdi/js"
+import { mdiArrowLeftBoldOutline, mdiDatabasePlus } from "@mdi/js"
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue"
 import SectionMain from "@/Components/SectionMain.vue"
 import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue"
@@ -15,33 +12,26 @@ import BaseDivider from '@/Components/BaseDivider.vue'
 import BaseButton from '@/Components/BaseButton.vue'
 import BaseButtons from '@/Components/BaseButtons.vue'
 
-const props = defineProps({
-  roles: {
-    type: Object,
-    default: () => ({}),
-  }
-})
 
 const form = useForm({
   name: '',
   email: '',
   password: '',
-  password_confirmation: '',
   role: ''
 })
 </script>
 
 <template>
   <LayoutAuthenticated>
-    <Head title="Add user" />
+    <Head title="Add Support Member" />
     <SectionMain>
       <SectionTitleLineWithButton
-        :icon="mdiAccountKey"
-        title="Add user"
+        :icon="mdiDatabasePlus"
+        title="Add Support Member"
         main
       >
         <BaseButton
-          :route-name="route('user.index')"
+          :route-name="route('support_teams.index')"
           :icon="mdiArrowLeftBoldOutline"
           label="Back"
           color="white"
@@ -51,7 +41,7 @@ const form = useForm({
       </SectionTitleLineWithButton>
       <CardBox
         form
-        @submit.prevent="form.post(route('user.store'))"
+        @submit.prevent="form.post(route('support_teams.store'))"
       >
         <FormField
           label="Name"
@@ -93,22 +83,6 @@ const form = useForm({
             v-model="form.password"
             type="password"
             placeholder="Enter Password"
-            :error="form.errors.password"
-          >
-            <div class="text-red-400 text-sm" v-if="form.errors.password">
-              {{ form.errors.password }}
-            </div>
-          </FormControl>
-        </FormField>
-
-        <FormField
-          label="Password Confirmation"
-          :class="{ 'text-red-400': form.errors.password }"
-        >
-          <FormControl
-            v-model="form.password_confirmation"
-            type="password"
-            placeholder="Enter Password Confirmation"
             :error="form.errors.password"
           >
             <div class="text-red-400 text-sm" v-if="form.errors.password">

@@ -32,13 +32,13 @@ class CreateSettingsTable extends Migration
             $table->string('youtube')->nullable();
             $table->string('address_en')->nullable();
             $table->string('address_ar')->nullable();
-            $table->string('latitude')->nullable()->default('24.774265');
-            $table->string('longitude')->nullable()->default('46.738586');
+            $table->string('latitude')->nullable()->default('25.168282');
+            $table->string('longitude')->nullable()->default('55.250286');
             $table->timestamps();
         });
         Setting::create(['name_en' => 'FNDEV Support', 'description_en' => 'FNDEV Tickets System',
             'email' => 'info@fndevcs.com', 'phone' => '01020304050', 'whatsapp' => '+201020304050',
-            'privacy_en' => 'App privacy', 'terms_en' => 'App terms']);
+            'privacy_en' => 'App privacy', 'terms_en' => 'App terms', 'address_en' => 'App Address']);
     }
 
     /**

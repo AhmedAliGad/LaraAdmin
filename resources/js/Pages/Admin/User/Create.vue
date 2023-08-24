@@ -1,31 +1,25 @@
 <script setup>
 import { Head, Link, useForm } from "@inertiajs/vue3"
-import {
-  mdiAccountKey,
-  mdiArrowLeftBoldOutline
-} from "@mdi/js"
+import axios from "axios";
+import { mdiArrowLeftBoldOutline, mdiDatabasePlus } from "@mdi/js"
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue"
 import SectionMain from "@/Components/SectionMain.vue"
 import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue"
 import CardBox from "@/Components/CardBox.vue"
 import FormField from '@/Components/FormField.vue'
 import FormControl from '@/Components/FormControl.vue'
-import FormCheckRadio from '@/Components/FormCheckRadio.vue'
 import BaseDivider from '@/Components/BaseDivider.vue'
 import BaseButton from '@/Components/BaseButton.vue'
 import BaseButtons from '@/Components/BaseButtons.vue'
+import Multiselect from 'vue-multiselect'
 
 const props = defineProps({
     companies: {
         type: Object,
         default: () => ({}),
     },
-    projects: {
-        type: Object,
-        default: () => ({}),
-    },
 })
-
+let projectsList = []
 const form = useForm({
   name: '',
   email: '',
@@ -35,16 +29,33 @@ const form = useForm({
   role: '',
   company_id: '',
   projects: [],
+  selectedProjects: [],
+  projectsList:[]
 })
+function getProjects()
+{
+    axios.get(route('projects_list', {'company_id' : form.company_id}), {
+        preserveScroll: true})
+        .then(response => {
+            form.projectsList = response.data.data
+        })
+}
+function updateProjects() {
+    let projects = [];
+    form.selectedProjects.forEach((project) => {
+        projects.push(project.id);
+    });
+    form.projects = projects;
+}
 </script>
 
 <template>
   <LayoutAuthenticated>
-    <Head title="Add user" />
+    <Head title="Add Client" />
     <SectionMain>
       <SectionTitleLineWithButton
-        :icon="mdiAccountKey"
-        title="Add user"
+        :icon="mdiDatabasePlus"
+        title="Add Client"
         main
       >
         <BaseButton
@@ -145,7 +156,7 @@ const form = useForm({
               :class="{ 'text-red-400': form.errors.company_id }"
           >
               <div class="relative">
-                  <select v-model="form.company_id"
+                  <select v-model="form.company_id" ref="companyID" @change="getProjects()"
                           class="px-3 py-2 max-w-full focus:ring focus:outline-none rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 border-gray-700">
                       <option value="" selected disabled>Select Company</option>
                       <option v-for="company in companies"  :value="company.id">{{ company.name }}</option>
@@ -155,7 +166,22 @@ const form = useForm({
           <div class="text-red-400 text-sm" v-if="form.errors.company_id">
               {{ form.errors.company_id }}
           </div>
-
+          <FormField
+              label="Projects"
+              :class="{ 'text-red-400': form.errors.projects }"
+          >
+              <div class="relative">
+                  <multiselect v-model="form.selectedProjects" :options="form.projectsList" :multiple="true" :close-on-select="false" :clear-on-select="false"
+                               :preserve-search="true" placeholder="Select Project" label="name" track-by="id" :preselect-first="false"
+                               @select="updateProjects()" @remove="updateProjects()"
+                               class="focus:ring focus:outline-none rounded dark:placeholder-gray-400 border bg-white dark:bg-slate-800 border-gray-700"
+                  >
+                  </multiselect>
+              </div>
+          </FormField>
+          <div class="text-red-400 text-sm" v-if="form.errors.projects">
+              {{ form.errors.projects }}
+          </div>
         <template #footer>
           <BaseButtons>
             <BaseButton
@@ -171,3 +197,4 @@ const form = useForm({
     </SectionMain>
   </LayoutAuthenticated>
 </template>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>

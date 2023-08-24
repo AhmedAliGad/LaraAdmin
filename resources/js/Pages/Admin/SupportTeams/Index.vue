@@ -33,22 +33,22 @@ const formDelete = useForm({})
 
 function destroy(id) {
   if (confirm("Are you sure you want to delete?")) {
-    formDelete.delete(route("user.destroy", id))
+    formDelete.delete(route("support_teams.destroy", id))
   }
 }
 </script>
 
 <template>
   <LayoutAuthenticated>
-    <Head title="Support Teams" />
+    <Head title="Support Team" />
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiMonitorAccount"
-        title="Support Teams"
+        title="Support Team"
         main
       >
         <BaseButton
-          :route-name="route('user.create')"
+          :route-name="route('support_teams.create')"
           :icon="mdiPlus"
           label="Add"
           color="info"
@@ -64,7 +64,7 @@ function destroy(id) {
         {{ $page.props.flash.message }}
       </NotificationBar>
       <CardBox class="mb-6" has-table>
-        <form @submit.prevent="form.get(route('user.index'))">
+        <form @submit.prevent="form.get(route('support_teams.index'))">
           <div class="py-2 flex">
             <div class="flex pl-4">
               <input
@@ -105,7 +105,7 @@ function destroy(id) {
             <tr v-for="user in users.data" :key="user.id">
               <td data-label="Name">
                 <Link
-                  :href="route('user.show', user.id)"
+                  :href="route('support_teams.show', user.id)"
                   class="
                     no-underline
                     hover:underline
@@ -125,17 +125,17 @@ function destroy(id) {
               <td class="before:hidden lg:w-1 whitespace-nowrap">
                 <BaseButtons type="justify-start lg:justify-end" no-wrap>
                   <BaseButton
-                    :route-name="route('user.edit', user.id)"
+                    :route-name="route('support_teams.edit', user.id)"
                     color="info"
                     label="Edit"
                     small
                   />
-                  <BaseButton
-                    color="danger"
-                    :icon="mdiTrashCan"
-                    small
-                    @click="destroy(user.id)"
-                  />
+                    <BaseButton
+                        color="danger"
+                        label="Delete"
+                        small
+                        @click="destroy(user.id)"
+                    />
                 </BaseButtons>
               </td>
             </tr>

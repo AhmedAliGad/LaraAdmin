@@ -46,7 +46,7 @@ class SupportTeamsController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/SupportTeams/Create');
     }
 
     /**
@@ -54,7 +54,9 @@ class SupportTeamsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        User::create($request->except('password') + ['password' => bcrypt($request->input('password'))]);
+
+        return redirect()->route('support_teams.index')->with('message', 'Member created successfully');
     }
 
     /**
@@ -70,7 +72,7 @@ class SupportTeamsController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return Inertia::render('Admin/SupportTeams/Edit', ['user' => $user]);
     }
 
     /**
@@ -78,7 +80,15 @@ class SupportTeamsController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        if ($request->filled('password') && $user->password != $request->get('password')) {
+            $user->update($request->except('password') + [
+                    'password' => bcrypt($request->input('password')),
+                ]);
+        } else {
+            $user->update($request->except('password'));
+        }
+
+        return redirect()->route('support_teams.index')->with('success', 'Updated Successfully !');
     }
 
     /**
